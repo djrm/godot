@@ -5353,7 +5353,7 @@ EditorNode::EditorNode() {
 	play_hb->add_child(debug_button);
 	//debug_button->set_toggle_mode(true);
 	debug_button->set_focus_mode(Control::FOCUS_NONE);
-	debug_button->set_icon(gui_base->get_icon("Remote", "EditorIcons"));
+	debug_button->set_icon(gui_base->get_icon("Debug", "EditorIcons"));
 	//debug_button->connect("pressed", this,"_menu_option",make_binds(RUN_LIVE_DEBUG));
 	debug_button->set_tooltip(TTR("Debug options"));
 
