@@ -112,69 +112,86 @@ Ref<ImageTexture> editor_generate_icon(int p_index, bool p_convert_color, float 
 void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = true, int p_thumb_size = 32, bool p_only_thumbs = false) {
 
 #ifdef SVG_ENABLED
-	Dictionary dark_icon_color_dictionary;
-	if (!p_dark_theme) {
-		//convert color:                              FROM       TO
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#e0e0e0", "#4f4f4f"); // common icon color
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ffffff", "#000000"); // white
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#b4b4b4", "#000000"); // script darker color
+	Dictionary colors_swap;
 
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#cea4f1", "#bb6dff"); // animation
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#fc9c9c", "#ff5f5f"); // spatial
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#a5b7f3", "#6d90ff"); // 2d
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#708cea", "#0843ff"); // 2d dark
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#a5efac", "#29d739"); // control
+	colors_swap[Color::html("#cea4f1")] = Color::html("#8b6ce1"); // animation
+	colors_swap[Color::html("#fc9c9c")] = Color::html("#f57389"); // spatial
+	colors_swap[Color::html("#a5b7f3")] = Color::html("#678ee6"); // 2d
+	colors_swap[Color::html("#708cea")] = Color::html("#2c63dd"); // 2d dark
+	colors_swap[Color::html("#a5efac")] = Color::html("#54e392"); // control
 
-		// rainbow
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ff7070", "#ff2929"); // red
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ffeb70", "#ffe337"); // yellow
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#9dff70", "#74ff34"); // green
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#70ffb9", "#2cff98"); // aqua
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#70deff", "#22ccff"); // blue
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#9f70ff", "#702aff"); // purple
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ff70ac", "#ff2781"); // pink
+	// rainbow
+	colors_swap[Color::html("#ff7070")] = Color::html("#f57373"); // red
+	colors_swap[Color::html("#ffeb70")] = Color::html("#f6c07a"); // yellow
+	colors_swap[Color::html("#9dff70")] = Color::html("#67e680"); // green
+	colors_swap[Color::html("#70ffb9")] = Color::html("#67e6bb"); // aqua
+	colors_swap[Color::html("#70deff")] = Color::html("#78c3f6"); // blue
+	colors_swap[Color::html("#9f70ff")] = Color::html("#8b6ce1"); // purple
+	colors_swap[Color::html("#ff70ac")] = Color::html("#f57389"); // pink
 
-		// audio gradient
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ff8484", "#ff4040"); // red
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#e1dc7a", "#d6cf4b"); // yellow
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#84ffb1", "#00f010"); // green
+	// audio gradient
+	colors_swap[Color::html("#ff7a7a")] = Color::html("#f57389"); // red
+	colors_swap[Color::html("#e1dc7a")] = Color::html("#f6c07a"); // yellow
+	colors_swap[Color::html("#66ff9e")] = Color::html("#67e6a4"); // green
 
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ffd684", "#fea900"); // mesh (orange)
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#40a2ff", "#68b6ff"); // shape (blue)
+	colors_swap[Color::html("#ffd684")] = Color::html("#f6c07a"); // mesh (orange)
+	colors_swap[Color::html("#68b6ff")] = Color::html("#61b9f4"); // shape (blue)
+	
+	// 3d shapes
+	colors_swap[Color::html("#a2d2ff")] = Color::html("#9cd3f8"); // shape (highlight)
+	colors_swap[Color::html("#2998ff")] = Color::html("#1296ef"); // shape (shadow)
 
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ff8484", "#ff3333"); // remove (red)
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#84ffb1", "#00db50"); // add (green)
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#84c2ff", "#5caeff"); // selection (blue)
+	// other RGB
+	colors_swap[Color::html("#ff7070")] = Color::html("#f57376"); // Color (R)
+	colors_swap[Color::html("#7aff70")] = Color::html("#84e667"); // Color (G)
+	colors_swap[Color::html("#70bfff")] = Color::html("#678ee6"); // Color (B)
 
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ea686c", "#e3383d"); // key xform (red)
+	colors_swap[Color::html("#84c2ff")] = Color::html("#679ee6"); // selection (blue)
+	colors_swap[Color::html("#ff8484")] = Color::html("#f57373"); // remove (red)
+	colors_swap[Color::html("#84ffb1")] = Color::html("#67e683"); // add (green)
 
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#69ecbd", "#25e3a0"); // VS variant
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#8da6f0", "#6d8eeb"); // VS bool
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#7dc6ef", "#4fb2e9"); // VS int
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#61daf4", "#27ccf0"); // VS float
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#6ba7ec", "#4690e7"); // VS string
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#bd91f1", "#ad76ee"); // VS vector2
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#f191a5", "#ee758e"); // VS rect
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#e286f0", "#dc6aed"); // VS vector3
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#c4ec69", "#96ce1a"); // VS transform2D
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#f77070", "#f77070"); // VS plane
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ec69a3", "#ec69a3"); // VS quat
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#ee7991", "#ee7991"); // VS aabb
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#e3ec69", "#b2bb19"); // VS basis
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#f6a86e", "#f49047"); // VS transform
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#6993ec", "#6993ec"); // VS path
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#69ec9a", "#2ce573"); // VS rid
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#79f3e8", "#12d5c3"); // VS object
-		ADD_CONVERT_COLOR(dark_icon_color_dictionary, "#77edb1", "#57e99f"); // VS dict
-	}
+	colors_swap[Color::html("#ea686c")] = Color::html("#f57376"); // key xform (red)
+
+	colors_swap[Color::html("#f57373")] = Color::html("#f57376"); // Color (R)
+	colors_swap[Color::html("#67e680")] = Color::html("#84e667"); // Color (G)
+	colors_swap[Color::html("#679ee6")] = Color::html("#678ee6"); // Color (B)
+
+	// Variant types
+	colors_swap[Color::html("#69ecbd")] = p_theme->get_color("Nil", "Editor");
+	colors_swap[Color::html("#8da6f0")] = p_theme->get_color("bool", "Editor");
+	colors_swap[Color::html("#7dc6ef")] = p_theme->get_color("int", "Editor");
+	colors_swap[Color::html("#61daf4")] = p_theme->get_color("float", "Editor");
+	colors_swap[Color::html("#6ba7ec")] = p_theme->get_color("String", "Editor");
+	colors_swap[Color::html("#bd91f1")] = p_theme->get_color("Vector2", "Editor");
+	colors_swap[Color::html("#f191a5")] = p_theme->get_color("Rect2", "Editor");
+	colors_swap[Color::html("#e286f0")] = p_theme->get_color("Vector3", "Editor");
+	colors_swap[Color::html("#c4ec69")] = p_theme->get_color("Transform2D", "Editor");
+	colors_swap[Color::html("#f77070")] = p_theme->get_color("Plane", "Editor");
+	colors_swap[Color::html("#ec69a3")] = p_theme->get_color("Quat", "Editor");
+	colors_swap[Color::html("#ee7991")] = p_theme->get_color("AABB", "Editor");
+	colors_swap[Color::html("#e3ec69")] = p_theme->get_color("Basis", "Editor");
+	colors_swap[Color::html("#f6a86e")] = p_theme->get_color("Transform", "Editor");
+	colors_swap[Color::html("#6993ec")] = p_theme->get_color("NodePath", "Editor");
+	colors_swap[Color::html("#69ec9a")] = p_theme->get_color("RID", "Editor");
+	colors_swap[Color::html("#79f3e8")] = p_theme->get_color("Object", "Editor");
+	colors_swap[Color::html("#77edb1")] = p_theme->get_color("Dictionary", "Editor");
 
 	// these ones should be converted even if we are using a dark theme
-	const Color error_color = p_theme->get_color("error_color", "Editor");
-	const Color success_color = p_theme->get_color("success_color", "Editor");
-	const Color warning_color = p_theme->get_color("warning_color", "Editor");
-	dark_icon_color_dictionary[Color::html("#ff5d5d")] = error_color;
-	dark_icon_color_dictionary[Color::html("#45ff8b")] = success_color;
-	dark_icon_color_dictionary[Color::html("#ffdd65")] = warning_color;
+	colors_swap[Color::html("#ff5d5d")] = p_theme->get_color("error_color", "Editor");
+	colors_swap[Color::html("#45ff8b")] = p_theme->get_color("success_color", "Editor");
+	colors_swap[Color::html("#ffdd65")] = p_theme->get_color("warning_color", "Editor");
+
+	// missing (Frozen VU)
+	// missing (Gizmo)
+	// missing (KeyCall)
+	// missing (Sky colors)
+	// missing (Color Ramp)
+
+	if (!p_dark_theme) {
+		colors_swap[Color::html("#e0e0e0")] = Color::html("#4f4f4f"); // common icon color
+		colors_swap[Color::html("#ffffff")] = Color::html("#000000"); // white
+		colors_swap[Color::html("#b4b4b4")] = Color::html("#000000"); // script darker color
+	}
 
 	List<String> exceptions;
 	exceptions.push_back("EditorPivot");
@@ -193,14 +210,8 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 	exceptions.push_back("ZoomReset");
 	exceptions.push_back("LockViewport");
 	exceptions.push_back("GroupViewport");
-	exceptions.push_back("StatusError");
-	exceptions.push_back("StatusSuccess");
-	exceptions.push_back("StatusWarning");
-	exceptions.push_back("NodeWarning");
 
-	clock_t begin_time = clock();
-
-	ImageLoaderSVG::set_convert_colors(&dark_icon_color_dictionary);
+	ImageLoaderSVG::set_convert_colors(&colors_swap);
 
 	// generate icons
 	if (!p_only_thumbs)
@@ -234,10 +245,6 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 	}
 
 	ImageLoaderSVG::set_convert_colors(NULL);
-
-	clock_t end_time = clock();
-
-	double time_d = (double)(end_time - begin_time) / CLOCKS_PER_SEC;
 #else
 	print_line("Sorry no icons for you");
 #endif
@@ -288,8 +295,8 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 			preset_contrast = 0.25;
 		} break;
 		case 4: { // Light
-			preset_accent_color = Color::html("#2070ff");
-			preset_base_color = Color::html("#ffffff");
+			preset_accent_color = Color::html("#3f75ed");
+			preset_base_color = Color::html("#eff1f5");
 			preset_contrast = 0.08;
 		} break;
 		case 5: { // Alien
@@ -362,16 +369,10 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 
 	theme->set_color("mono_color", "Editor", mono_color);
 
-	Color success_color = accent_color.linear_interpolate(Color(0.2, 1, 0.2), 0.6) * 1.2;
-	Color warning_color = accent_color.linear_interpolate(Color(1, 1, 0), 0.7) * 1.2;
-	Color error_color = accent_color.linear_interpolate(Color(1, 0, 0), 0.8) * 1.7;
-	if (!dark_theme) {
-		// yellow on white themes is a P.I.T.A.
-		warning_color = accent_color.linear_interpolate(Color(1, 0.8, 0), 0.9);
-		warning_color = warning_color.linear_interpolate(mono_color, 0.2);
-		success_color = success_color.linear_interpolate(mono_color, 0.2);
-		error_color = error_color.linear_interpolate(mono_color, 0.2);
-	}
+	// Status colors
+	Color success_color = Color::html("#57eb78");
+	Color warning_color = Color::html("#f0c151");
+	Color error_color = Color::html("#f05d5d");
 	theme->set_color("success_color", "Editor", success_color);
 	theme->set_color("warning_color", "Editor", warning_color);
 	theme->set_color("error_color", "Editor", error_color);
@@ -380,6 +381,36 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_color("x", "Editor", Color(1, .1, .1).linear_interpolate(accent_color, 0.3));
 	theme->set_color("y", "Editor", Color(.1, .9, .1).linear_interpolate(accent_color, 0.3));
 	theme->set_color("z", "Editor", Color(0, 0.3, 1).linear_interpolate(accent_color, 0.3));
+	
+	// Variant type colors
+	theme->set_color("Nil", "Editor", Color::html("#67e6bb")); // Any
+	theme->set_color("bool", "Editor", Color::html("#678ee6"));
+	theme->set_color("int", "Editor", Color::html("#78ccf6"));
+	theme->set_color("float", "Editor", Color::html("#78e5f6"));
+	theme->set_color("String", "Editor", Color::html("#6777e6"));
+	theme->set_color("Vector2", "Editor", Color::html("#8b6ce1"));
+	theme->set_color("Rect2", "Editor", Color::html("#f57389"));
+	theme->set_color("Vector3", "Editor", Color::html("#b66ce1"));
+	theme->set_color("Transform2D", "Editor", Color::html("#84e667"));
+	theme->set_color("Plane", "Editor", Color::html("#f57376"));
+	theme->set_color("Quat", "Editor", Color::html("#f573b0"));
+	theme->set_color("AABB", "Editor", Color::html("#f573a1"));
+	theme->set_color("Basis", "Editor", Color::html("#e6c167"));
+	theme->set_color("Transform", "Editor", Color::html("#f8aa76"));
+	theme->set_color("Color", "Editor", Color::html("#719fc0"));
+	theme->set_color("NodePath", "Editor", Color::html("#6f67e6"));
+	theme->set_color("RID", "Editor", Color::html("#67e695"));
+	theme->set_color("Object", "Editor", Color::html("#67e67a"));
+	theme->set_color("Dictionary", "Editor", Color::html("#67e69b"));
+	theme->set_color("Array", "Editor", Color::html("#92adc1"));
+	theme->set_color("PoolByteArray", "Editor", Color::html("#93f1b9"));
+	theme->set_color("PoolIntArray", "Editor", Color::html("#99d9f8"));
+	theme->set_color("PoolRealArray", "Editor", Color::html("#8ae9f7"));
+	theme->set_color("PoolStringArray", "Editor", Color::html("#919ced"));
+	theme->set_color("PoolVector2Array", "Editor", Color::html("#9e84e6"));
+	theme->set_color("PoolVector3Array", "Editor", Color::html("#c182e5"));
+	theme->set_color("PoolColorArray", "Editor", Color::html("#adc8db"));
+
 
 	// 2d grid color
 	const Color grid_minor_color = mono_color * Color(1.0, 1.0, 1.0, 0.07);
