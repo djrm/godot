@@ -136,7 +136,7 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 
 	colors_swap[Color::html("#ffd684")] = Color::html("#f6c07a"); // mesh (orange)
 	colors_swap[Color::html("#68b6ff")] = Color::html("#61b9f4"); // shape (blue)
-	
+
 	// 3d shapes
 	colors_swap[Color::html("#a2d2ff")] = Color::html("#9cd3f8"); // shape (highlight)
 	colors_swap[Color::html("#2998ff")] = Color::html("#1296ef"); // shape (shadow)
@@ -252,8 +252,6 @@ void editor_register_and_generate_icons(Ref<Theme> p_theme, bool p_dark_theme = 
 
 Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 
-	Ref<Theme> theme = p_theme != NULL ? p_theme : Ref<Theme>(memnew(Theme));
-
 	const float default_contrast = 0.25;
 
 	//Theme settings
@@ -352,6 +350,8 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 
 	const Color highlight_color = Color(mono_color.r, mono_color.g, mono_color.b, 0.2);
 
+	Ref<Theme> theme = p_theme != NULL ? p_theme : Ref<Theme>(memnew(Theme));
+
 	theme->set_color("accent_color", "Editor", accent_color);
 	theme->set_color("highlight_color", "Editor", highlight_color);
 	theme->set_color("base_color", "Editor", base_color);
@@ -381,7 +381,7 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_color("x", "Editor", Color(1, .1, .1).linear_interpolate(accent_color, 0.3));
 	theme->set_color("y", "Editor", Color(.1, .9, .1).linear_interpolate(accent_color, 0.3));
 	theme->set_color("z", "Editor", Color(0, 0.3, 1).linear_interpolate(accent_color, 0.3));
-	
+
 	// Variant type colors
 	theme->set_color("Nil", "Editor", Color::html("#67e6bb")); // Any
 	theme->set_color("bool", "Editor", Color::html("#678ee6"));
@@ -410,7 +410,6 @@ Ref<Theme> create_editor_theme(const Ref<Theme> p_theme) {
 	theme->set_color("PoolVector2Array", "Editor", Color::html("#9e84e6"));
 	theme->set_color("PoolVector3Array", "Editor", Color::html("#c182e5"));
 	theme->set_color("PoolColorArray", "Editor", Color::html("#adc8db"));
-
 
 	// 2d grid color
 	const Color grid_minor_color = mono_color * Color(1.0, 1.0, 1.0, 0.07);
