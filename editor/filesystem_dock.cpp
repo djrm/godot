@@ -1864,27 +1864,6 @@ FileSystemDock::FileSystemDock(EditorNode *p_editor) {
 	button_favorite->set_focus_mode(FOCUS_NONE);
 	toolbar_hbc->add_child(button_favorite);
 
-	//Control *spacer = memnew( Control);
-
-	/*
-	button_open = memnew( Button );
-	button_open->set_flat(true);
-	button_open->connect("pressed",this,"_go_to_file_list");
-	toolbar_hbc->add_child(button_open);
-	button_open->hide();
-	button_open->set_focus_mode(FOCUS_NONE);
-	button_open->set_tooltip("Open the selected file.\nOpen as scene if a scene, or as resource otherwise.");
-
-
-	button_instance = memnew( Button );
-	button_instance->set_flat(true);
-	button_instance->connect("pressed",this,"_instance_pressed");
-	toolbar_hbc->add_child(button_instance);
-	button_instance->hide();
-	button_instance->set_focus_mode(FOCUS_NONE);
-	button_instance->set_tooltip(TTR("Instance the selected scene(s) as child of the selected node."));
-
-*/
 	file_options = memnew(PopupMenu);
 	add_child(file_options);
 

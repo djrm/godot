@@ -40,39 +40,101 @@ class EditorTheme : public Theme {
 	int thumb_size;
 	bool dark_theme;
 
-	Color mono_color;
-	Color mono_color_inv;
+	// user specified
+	Color primary_color;
+	Color accent_color;
+
+	Color accent_color_opt;
+
 	Color base_color;
 	Color base_color_strong;
 	Color base_color_stronger;
 	Color contrast_color;
 	Color contrast_color_strong;
-	Color base_color;
-	Color accent_color;
-	Color font_color_muted;
-	Color font_color_dim;
-	Color font_color;
-	Color font_color_strong;
+	Color background_color;
 
-	void _generate_styleboxes();
-	void _generate_colors();
-	// void _generate_colors();
+	Color mono_color;
+	Color mono_color_inv;
+	Color font_color_muted; // muted color, used for disabled things
+	Color font_color_dim; // subtle variation of font color
+	Color font_color; // default font color
+	Color font_color_strong; // highlight font color
+	Color alpha_color;
+	Color separation_color;
+	Color separator_color;
+
+	// strongest color.
+	Ref<StyleBoxFlat> style_background;
+
+	// its only property is having the default margins
+	Ref<StyleBoxFlat> style_base;
+
+	// this has primary color bg and default padding
+	Ref<StyleBoxFlat> style_container;
+
+	Ref<StyleBoxFlat> style_button;
+	Ref<StyleBoxFlat> style_button_pressed;
+	Ref<StyleBoxFlat> style_button_focused;
+	Ref<StyleBoxFlat> style_button_hovered;
+	Ref<StyleBoxFlat> style_button_disabled;
+	Ref<StyleBoxFlat> style_button_flat;
+	Ref<StyleBoxFlat> style_button_flat_pressed;
+	Ref<StyleBoxFlat> style_button_flat_focused;
+	Ref<StyleBoxFlat> style_button_flat_hovered;
+	Ref<StyleBoxFlat> style_button_flat_disabled;
+
+	Ref<StyleBoxFlat> style_input;
+	Ref<StyleBoxFlat> style_input_focused;
+	// Ref<StyleBoxFlat> style_input_hovered;
+	Ref<StyleBoxFlat> style_input_disabled;
+
+	// content panels, they use the base color
+	Ref<StyleBoxFlat> style_panel;
+
+	// style for popup menus
+	Ref<StyleBoxFlat> style_popup;
+
+	Ref<StyleBoxFlat> style_window;
+	// this style is used windows that contain unusual ui, like tabs
+	Ref<StyleBoxFlat> style_special_window;
+
+	Ref<StyleBoxFlat> style_tab_selected;
+	Ref<StyleBoxFlat> style_tab_unselected;
+	// Ref<StyleBoxFlat> style_tab_disabled;
+
+	Ref<StyleBoxFlat> style_tab_container;
+
+	// a frame that goes around a hovered element
+	Ref<StyleBoxFlat> style_cursor;
+
+	Ref<StyleBoxFlat> style_tooltip;
+
+	Ref<StyleBoxLine> style_separator;
+
+	// texture style boxes
+	Ref<StyleBoxTexture> style_scroll_bg;
+	Ref<StyleBoxTexture> style_scroll_grabber;
+	Ref<StyleBoxTexture> style_scroll_grabber_hover;
+	Ref<StyleBoxTexture> style_scroll_grabber_pressed;
+	Ref<StyleBoxTexture> style_progress_bg;
+	Ref<StyleBoxTexture> style_progress_fill;
+
+	void _set_constants();
+	void _set_icons();
+	void _set_colors();
 
 public:
-	void update();
+	void set_thumb_size(int p_thumb_size);
+	void set_scale(int p_scale);
 
-	int set_thumb_size(int p_thumb_size);
-	int set_scale(int p_scale);
-	// bool set_dark_theme(bool p_dark);
-
-	void set_base_color(Color p_base_color);
+	void set_primary_color(Color p_primary_color);
 	void set_accent_color(Color p_accent_color);
 
-	bool get_thumb_size() const;
-	bool get_scale() const;
-	bool is_dark_theme() const;
+	int get_thumb_size() const { return thumb_size; };
+	int get_scale() const { return scale; };
+	// bool is_dark_theme() const;
 
-	EditorTheme();
+	EditorTheme(Color p_primary_color, Color p_accent_color, int p_scale, int p_thumb_size);
 };
 
 #endif
